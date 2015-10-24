@@ -7,18 +7,23 @@ var EventGroup = require('./src/event-group')(db);
 
 Book.prototype.getEventGroups = function getEventGroups() {
   // ugly hack, slow temporary query
-  var bookId = this.id;
-  db.query((doc, emit) => {
-    if (doc.bookId === bookId) {
-      emit(doc);
-    }
-  }).then((result) => {
-    return result;
+  var bookId = this._id;
+  // console.log('key:', bookId);
+  return db.query((doc, emit) => {
+    // console.log('map:', doc.bookId);
+    emit(doc.bookId);
+  }, {
+    key: bookId,
+    include_docs: true
+  }).then(result => {
+    return result.rows.map(record => {
+      return new EventGroup(record.doc);
+    });
   });
 };
 
 Book.prototype.setEventGroups = function setEventGroups(eventGroupIds) {
-  var bookId = this.id;
+  var bookId = this._id;
   return db.bulkDocs(eventGroupIds.map((eventGroupId) => {
     return {
       bookId: bookId,
