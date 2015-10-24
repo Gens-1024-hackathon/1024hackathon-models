@@ -1,5 +1,7 @@
 module.exports = function(db) {
 
+  var type = 'eventgroup';
+
   return class EventGroup {
 
     constructor(data) {
@@ -7,8 +9,9 @@ module.exports = function(db) {
     }
 
     static create(data) {
-      var id = 'book:' + new Date().toJSON() + ':' + Math.random();
+      var id = type + ':' + new Date().toJSON() + ':' + Math.random();
       data = data || {};
+      data.type = type;
       return db
         .put(data, id)
         .then((result) => {
@@ -22,8 +25,8 @@ module.exports = function(db) {
       return db
         .allDocs({
           include_docs: true,
-          startkey: 'book:',
-          endkey: 'book:\uffff'
+          startkey: type + ':',
+          endkey: type + ':\uffff'
         })
         .then((result) => {
           return result.rows.map((record) => {
