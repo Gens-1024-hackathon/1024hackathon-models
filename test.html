@@ -14,7 +14,19 @@
   <script src="dist/models.js"></script>
   <script>
   var Book = _model.Book;
-  Book.create();
+  // create test
+  // Book
+  //   .create({a: 1})
+  //   .then(function() {
+  //     console.log(arguments);
+  //   });
+
+  // find by id test
+  Book
+    .findAll()
+    .then(function() {
+      console.log(arguments);
+    });
   </script>
 </body>
 </html>

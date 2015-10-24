@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "babelify": "^6.4.0",
-    "pouchdb": "^5.0.0"
+    "pouchdb": "^5.0.0",
+    "uglifyify": "^3.0.1"
   },
   "devDependencies": {},
   "scripts": {

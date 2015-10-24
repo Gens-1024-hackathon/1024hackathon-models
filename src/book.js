@@ -7,34 +7,52 @@ module.exports = function(db) {
     }
 
     static create(data) {
-      console.log('create book');
-      return db.put();
+      var id = 'book:' + new Date().toJSON() + ':' + Math.random();
+      data = data || {};
+      return db
+        .put(data, id)
+        .then((result) => {
+          data._id = result.id;
+          data._rev = result.rev;
+          return new Book(data);
+        });
     }
 
     static findAll() {
-      return db.query();
+      return db
+        .allDocs({
+          include_docs: true,
+          startkey: 'book:',
+          endkey: 'book:\uffff'
+        })
+        .then((result) => {
+          return result.rows.map((record) => {
+            return new Book(record.doc);
+          });
+        });
     }
 
     static findById(id) {
       return db
         .get(id)
-        .then(function(data) {
-          new Book(data);
+        .then((data) => {
+          return new Book(data);
         });
-    }
-
-    getEventGroups() {
     }
 
     save() {
       return db
-        .put();
+        .put(this)
+        .then((result) => {
+          this._id = result.id;
+          this._rev = result.rev;
+          return this;
+        });
     }
 
     destroy() {
-      var id = this.id;
       return db
-        .remove(id);
+        .remove(this);
     }
 
   };
