@@ -1,0 +1,3 @@
+#!/bin bash
+
+browserify index.js -t babelify --output dist/models.js
