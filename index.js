@@ -37,5 +37,5 @@ EventGroup.prototype.setBook = function setBook(bookId) {
 };
 
 window._model = window._models || {};
-window._model.Book = Book(db);
-window._model.EventGroup = EventGroup(db);
+window._model.Book = Book;
+window._model.EventGroup = EventGroup;
