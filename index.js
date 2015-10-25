@@ -5,14 +5,28 @@ var db = new PouchDB('store');
 var Book = require('./src/book')(db);
 var EventGroup = require('./src/event-group')(db);
 
+var ddoc = {
+  _id: '_design/my_index',
+  views: {
+    by_bookId: {
+      map: function(doc) {
+        emit(doc.bookId);
+      }.toString()
+    }
+  }
+}
+
+db.put(ddoc).then(function() {
+  console.log('ok');
+}).catch(function() {
+  console.log('ddoc already exist');
+});
+
 Book.prototype.getEventGroups = function getEventGroups() {
   // ugly hack, slow temporary query
   var bookId = this._id;
   // console.log('key:', bookId);
-  return db.query((doc, emit) => {
-    // console.log('map:', doc.bookId);
-    emit(doc.bookId);
-  }, {
+  return db.query('my_index/by_bookId', {
     key: bookId,
     include_docs: true
   }).then(result => {
