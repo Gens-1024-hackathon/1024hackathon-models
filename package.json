@@ -1,5 +1,5 @@
 {
-  "name": "models",
+  "name": "kampare-models",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,6 +16,6 @@
     "pack:release": "browserify -t babelify -g uglifyify index.js -o dist/models.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "GG",
   "license": "ISC"
 }

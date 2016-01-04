@@ -47,6 +47,10 @@ window._model = registry._model;
 },{"./definitions/book":1,"./definitions/event-group":2,"./lib/registry":5,"babelify/polyfill":9,"pouchdb":280}],4:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
@@ -115,16 +119,29 @@ var Model = (function () {
   return Model;
 })();
 
-module.exports = Model;
+exports['default'] = Model;
+module.exports = exports['default'];
 
 },{}],5:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var Model = require('./model');
+var _model = require('./model');
+
+var _model2 = _interopRequireDefault(_model);
 
 var Registry = (function () {
   function Registry(db) {
@@ -140,24 +157,29 @@ var Registry = (function () {
       this._model = this._model || {};
       this._definition = this._definition || {};
 
-      var model = function model(data) {
-        Object.assign(this, data);
+      var model = (function (_Model) {
+        _inherits(model, _Model);
 
-        // static
-        this.db = db;
-        this.type = definition.type;
-      };
+        function model(data) {
+          _classCallCheck(this, model);
 
-      // inherit
-      model.prototype = Object.create(Model.prototype);
+          _get(Object.getPrototypeOf(model.prototype), 'constructor', this).call(this);
+          Object.assign(this, data);
+          // static
+          this.db = db;
+          this.type = definition.type;
+        }
+
+        return model;
+      })(_model2['default']);
 
       // static
       model.db = db;
       model.type = definition.type;
 
-      model.findAll = Model.findAll;
-      model.create = Model.create;
-      model.findById = Model.findById;
+      model.findAll = _model2['default'].findAll;
+      model.create = _model2['default'].create;
+      model.findById = _model2['default'].findById;
 
       this._definition[definition.type] = definition;
       this._model[definition.type] = model;
@@ -225,7 +247,8 @@ var Registry = (function () {
   return Registry;
 })();
 
-module.exports = Registry;
+exports['default'] = Registry;
+module.exports = exports['default'];
 
 },{"./model":4}],6:[function(require,module,exports){
 'use strict';

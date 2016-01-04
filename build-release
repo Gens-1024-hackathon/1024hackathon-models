@@ -1,7 +1,0 @@
-#!/bin/bash
-
-browserify \
-  -t babelify \
-  -g uglifyify \
-  index.js \
-  -o dist/models.js
