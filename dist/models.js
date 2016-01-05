@@ -13,36 +13,40 @@ module.exports={
 },{}],3:[function(require,module,exports){
 'use strict';
 
-require('babelify/polyfill');
-var PouchDB = require('pouchdb');
-var Registry = require('./lib/registry');
+(function (app) {
 
-var db = new PouchDB('store');
-var registry = new Registry(db);
+  require('babelify/polyfill');
+  var PouchDB = require('pouchdb');
+  var Registry = require('./lib/registry');
 
-registry.loadDefinition(require('./definitions/book'));
-registry.loadDefinition(require('./definitions/event-group'));
+  var db = new PouchDB('store');
+  var registry = new Registry(db);
 
-var ddoc = {
-  _id: '_design/my_index',
-  views: {
-    by_bookId: {
-      map: (function (doc) {
-        emit(doc.bookId);
-      }).toString()
+  registry.loadDefinition(require('./definitions/book'));
+  registry.loadDefinition(require('./definitions/event-group'));
+
+  var ddoc = {
+    _id: '_design/my_index',
+    views: {
+      by_bookId: {
+        map: (function (doc) {
+          emit(doc.bookId);
+        }).toString()
+      }
     }
-  }
-};
+  };
 
-db.put(ddoc).then(function () {
-  console.log('ok');
-})['catch'](function () {
-  console.log('ddoc already exist');
-});
+  db.put(ddoc).then(function () {
+    console.log('ok');
+  })['catch'](function () {
+    console.log('ddoc already exist');
+  });
 
-registry.bootstrap();
+  registry.bootstrap();
 
-window._model = registry._model;
+  app.Book = registry._model.Book;
+  app.EventGroup = registry._model.EventGroup;
+})(window._model || (window._model = {}));
 
 },{"./definitions/book":1,"./definitions/event-group":2,"./lib/registry":5,"babelify/polyfill":9,"pouchdb":280}],4:[function(require,module,exports){
 'use strict';
